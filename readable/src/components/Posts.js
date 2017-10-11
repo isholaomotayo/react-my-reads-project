@@ -1,13 +1,56 @@
 import React from 'react'
+import {Comments} from "./Comments"
+import {getComments} from '../actions'
+import {vote, getAllComments} from '../utils/index'
+import {connect} from 'react-redux'
+import {withRouter} from 'react-router-dom'
 
-export const Posts = ( { posts }) =>
-<div className="desc">
-  <span className="type">
-  <i className="fa fa-plus-square-o"/><br/> {posts[posts.length - 1].voteScore}<br/> <i
-className="fa fa-minus-square-o"/>
+class Posts extends React.Component {
+
+  componentDidMount()
+  {
+    getAllComments(this.props.posts.filter((posts) => (posts.id === this.props.match.params.id))
+      .reduce((post, c) => (c), {}).id).then(comments => this.props.postsComments(comments))
+  }
+  render() {
+    const {comments, posts, match} = this.props
+
+    const upVote = () => vote({
+      "id": post.id,
+      "option": {"option": "upVote"}
+    })
+    const downVote = () => vote({
+      "id": post.id,
+      "option": {"option": "downVote"}
+    })
+
+    const post = (posts).filter((posts) => (posts.id === match.params.id))
+       .reduce((post, c) => (c), {})
+
+    return (
+      <div className="post">
+  <span className="vote"> VOTE <hr/>
+    <i className="fa fa-plus-square-o" onClick={upVote}/><br/> {post.voteScore}<br/> <i
+      className="fa fa-minus-square-o" onClick={downVote}/>
   </span>
+        <h1>{posts && post.title}</h1>
+        <p>{post.body}
+        </p>
+        <Comments comments={comments} post={post}/>
+      </div>
+    )
+  }
+}
 
-  <h1>{ posts && posts[posts.length - 1].title}</h1>
-<p>{posts[posts.length - 1].body}
-</p>
-</div>
+const mapStateToProps = (state, props) => ({
+  comments: state.comments
+
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    postsComments: (data) => dispatch(getComments(data))
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Posts))

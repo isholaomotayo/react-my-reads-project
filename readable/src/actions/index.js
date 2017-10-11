@@ -4,6 +4,7 @@
 export const GET_POSTS='GET_POSTS'
 export const GET_CATEGORIES='GET_CATEGORIES'
 export const GET_COMMENTS='GET_COMMENTS'
+export const GET_ALL_COMMENTS='GET_ALL_COMMENTS'
 
 export const getCategories = (categories) => {
     return {
@@ -22,6 +23,13 @@ export const getPosts = (posts) => {
 export const getComments = (comments) => {
   return {
     type: GET_COMMENTS,
+    comments
+  }
+}
+
+export const getAllComments = (comments) => {
+  return {
+    type: GET_ALL_COMMENTS,
     comments
   }
 }

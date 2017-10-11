@@ -6,6 +6,7 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import reducer from './reducers'
 import '../node_modules/font-awesome/css/font-awesome.min.css';
+import { BrowserRouter } from 'react-router-dom'
 
 /* eslint-disable no-underscore-dangle */
 const store = createStore(
@@ -15,7 +16,10 @@ const store = createStore(
 /* eslint-enable */
 ReactDOM.render(
     <Provider store={store}>
+      <BrowserRouter>
         <App />
-    </Provider>,
+    </BrowserRouter>
+    </Provider>
+  ,
     document.getElementById('root'));
 
