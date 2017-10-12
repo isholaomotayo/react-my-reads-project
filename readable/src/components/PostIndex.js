@@ -26,9 +26,8 @@ componentDidMount(){
 }
   render() {
 
-    const {posts, match, comments } = this.props
+    const { comments } = this.props
 
-    console.log(this.props)
     const categoryPosts =  this.props.posts
     this.state.direction === 'desc' ?
       categoryPosts.sort(sortBy(this.state.criteria)).reverse() :

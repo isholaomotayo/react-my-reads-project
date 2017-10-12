@@ -493,6 +493,7 @@ fieldset {
   column-count: 4;
   /* gap between the columns */
   column-gap: 16px;
+  margin: 1em;
 }
 
 .masonry div {
@@ -521,7 +522,7 @@ h2 {
 
 .inline {
   display: inline-block;
-  padding: 0  1em 0 1em;
+
 }
 
 .comment-content{
@@ -604,4 +605,8 @@ h2 {
 }
 .option-input.radio::after {
   border-radius: 50%;
+}
+
+i{
+  cursor: pointer;
 }

@@ -24,25 +24,27 @@ class Posts extends React.Component {
     "option": {"option": "downVote"}
   })
 
-removePost =()=>deletePost(this.props.posts.id)
+removePost = () => deletePost(this.props.posts.id)
   onEditPost = () => editPost(this.props.posts.id)
 
   render() {
-    const {comments} = this.props
+    const {comments , posts } = this.props
+       const post = posts.reduce((post, c) => (c), {})
+
 
     return (
       <div className="post">
   <span className="vote"> VOTE <hr/>
-    <i className="fa fa-plus-square-o" onClick={this.upVote}/><br/> {this.props.posts.voteScore}<br/>
+    <i className="fa fa-plus-square-o" onClick={this.upVote}/><br/> {post.voteScore}<br/>
     <i className="fa fa-minus-square-o" onClick={this.downVote}/>
     <br/> <hr/> <br/>
     <i className="fa fa-edit inline bigText" /><br/> <br/>
     <i className="fa fa-trash inline bigText" onClick={this.removePost}/>
   </span>
-        <h1>{this.props.posts && this.props.posts.title}</h1>
-        <p>{this.props.posts.body}
+        <h1>{post && post.title}</h1>
+        <p>{post.body}
         </p>
-        <Comments comments={comments} post={this.props.posts}/>
+        <Comments comments={comments} post={post}/>
       </div>
     )
   }

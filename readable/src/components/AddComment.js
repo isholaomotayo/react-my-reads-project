@@ -29,7 +29,7 @@ class AddComment extends Component {
 
     }
     editComment(comment).then(
-      data => swal("New Comment Added", `Your Comment<br/> ${data.body} <br />has been edited successfully`, "success"), this.props.close())
+      data => swal("New Comment Added", `Your Comment ${data.body} has been edited successfully`, "success"), this.props.close())
   }
 
   render() {
