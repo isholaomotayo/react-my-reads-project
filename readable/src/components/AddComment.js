@@ -2,7 +2,7 @@ import Modal from 'react-responsive-modal';
 import React, {Component} from 'react'
 import swal from 'sweetalert'
 import uuidv4 from 'uuid'
-import { addComment } from '../utils';
+import { addComment, editComment } from '../utils';
 
 
 class AddComment extends Component {
@@ -21,6 +21,16 @@ class AddComment extends Component {
     addComment(comment).then(
       data => swal("New Comment Added", `Your Comment ${data.body} has been added successfully`, "success"), this.props.close())
   }
+  onEditComment = () => {
+    let comment = {
+      id:this.props.commentEditId,
+      timestamp: Date.now(),
+      body: this.commentBody.value.trim(),
+
+    }
+    editComment(comment).then(
+      data => swal("New Comment Added", `Your Comment<br/> ${data.body} <br />has been edited successfully`, "success"), this.props.close())
+  }
 
   render() {
     const {post, close, open} = this.props
@@ -30,27 +40,29 @@ class AddComment extends Component {
       <Modal open={open} onClose={close}>
         <div className="form-group wide">
           <form>
-            <h1>Add new Comment</h1>
+            <h1>
+            {this.props.commentEditId ? 'Edit Comment' : 'Add a Comment' }
+           </h1>
             <div className="form-group">
               <input type="hidden" ref={(input) => {
                 this.commentParent = input
-              }} value={post.id}/>
-            </div>
-            <div className="form-group">
+              }} value={post}/>
+            </div>{console.log(this.props.commentEditId)}
+            {!this.props.commentEditId && <div className="form-group">
               <input type="text" ref={(input) => {
                 this.commentAuthor = input
-              }} required="required"/>
+              }} required="required" />
               <label className="control-label" htmlFor="input">Author</label><i className="bar"></i>
-            </div>
+            </div>}
+
             <div className="form-group">
                 <textarea ref={(input) => {
                   this.commentBody = input
-                }} required="required"></textarea>
+                }} required="required" defaultValue={this.props.commentEditBody && this.props.commentEditBody}></textarea>
               <label className="control-label" htmlFor="textarea">Comment Body</label><i className="bar"></i>
             </div>
             <div className="button-container">
-
-              <button className="button" type="button" onClick={this.onAddComment}><span>Submit</span></button>
+              <button className="button" type="button" onClick={ this.props.commentEditId? this.onEditComment : this.onAddComment}><span>Submit</span></button>
             </div>
           </form>
 

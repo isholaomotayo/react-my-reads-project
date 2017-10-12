@@ -1,54 +1,61 @@
 import React from 'react'
 import {Comments} from "./Comments"
-import {getComments} from '../actions'
-import {vote, getAllComments} from '../utils/index'
+import {getComments, getPost} from '../actions'
+import {vote, getAllComments, deletePost, editPost, getSinglePost} from '../utils/index'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 
 class Posts extends React.Component {
 
-  componentDidMount()
-  {
-    getAllComments(this.props.posts.filter((posts) => (posts.id === this.props.match.params.id))
-      .reduce((post, c) => (c), {}).id).then(comments => this.props.postsComments(comments))
+
+
+  componentDidMount() {
+    getSinglePost(this.props.match.params.id).then(post => this.props.singlePost(post))
+      .then( post =>
+   getAllComments(post.post.id).then(comments => this.props.postsComments(comments)))
   }
+
+   upVote = () => vote({
+    "id": this.props.posts.id,
+    "option": {"option": "upVote"}
+  })
+  downVote = () => vote({
+    "id": this.props.posts.id,
+    "option": {"option": "downVote"}
+  })
+
+removePost =()=>deletePost(this.props.posts.id)
+  onEditPost = () => editPost(this.props.posts.id)
+
   render() {
-    const {comments, posts, match} = this.props
-
-    const upVote = () => vote({
-      "id": post.id,
-      "option": {"option": "upVote"}
-    })
-    const downVote = () => vote({
-      "id": post.id,
-      "option": {"option": "downVote"}
-    })
-
-    const post = (posts).filter((posts) => (posts.id === match.params.id))
-       .reduce((post, c) => (c), {})
+    const {comments} = this.props
 
     return (
       <div className="post">
   <span className="vote"> VOTE <hr/>
-    <i className="fa fa-plus-square-o" onClick={upVote}/><br/> {post.voteScore}<br/> <i
-      className="fa fa-minus-square-o" onClick={downVote}/>
+    <i className="fa fa-plus-square-o" onClick={this.upVote}/><br/> {this.props.posts.voteScore}<br/>
+    <i className="fa fa-minus-square-o" onClick={this.downVote}/>
+    <br/> <hr/> <br/>
+    <i className="fa fa-edit inline bigText" /><br/> <br/>
+    <i className="fa fa-trash inline bigText" onClick={this.removePost}/>
   </span>
-        <h1>{posts && post.title}</h1>
-        <p>{post.body}
+        <h1>{this.props.posts && this.props.posts.title}</h1>
+        <p>{this.props.posts.body}
         </p>
-        <Comments comments={comments} post={post}/>
+        <Comments comments={comments} post={this.props.posts}/>
       </div>
     )
   }
 }
 
 const mapStateToProps = (state, props) => ({
-  comments: state.comments
-
+  comments: state.comments,
+  posts: state.posts
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    singlePost: (data) => dispatch(getPost(data)),
     postsComments: (data) => dispatch(getComments(data))
   }
 }

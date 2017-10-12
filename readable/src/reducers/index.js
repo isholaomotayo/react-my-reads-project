@@ -5,6 +5,7 @@ import {
   GET_CATEGORIES,
   GET_COMMENTS,
   GET_ALL_COMMENTS,
+  GET_POST
   //ADD_POSTS
 } from '../actions'
 
@@ -33,6 +34,8 @@ const posts = (state =  [{
   switch (action.type) {
     case GET_POSTS:
       return action.posts.posts
+    case GET_POST:
+      return [action.post]
     default :
       return state
   }

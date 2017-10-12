@@ -22,22 +22,13 @@ class App extends Component {
     this.setState({open: false})
   }
 
-  getPostandComments = ()=>{
-    this.props.clearComments([])
-  server.getAllPosts().then(posts =>
-  this.props.allPosts({posts})
-).then((posts) =>( posts.posts.posts.map(post => server.getAllComments(post.id)
-.then(comment => this.props.allComments(
-    comment)))))
-}
   componentDidMount() {
     server.getAllCategories().then(categories =>
-      this.props.allCategories({categories})
-    )
+      this.props.allCategories({categories}))
+      }
 
-  }
   render() {
-    const {posts, categories, comments} = this.props
+    const { categories} = this.props
 
     return (
 
@@ -68,13 +59,13 @@ class App extends Component {
         </nav>
         <div className="container">
           <Route exact path='/'
-                 render={() => (<PostIndex posts={posts} comments={comments} getAll={this.getPostandComments}/>)}
+                 render={() => (<PostIndex  />)}
           />
           <Route exact path='/:category/:id'
-                 render={(props) => (<Posts  {...props} posts={posts}/>)}
+                 render={(props) => (<Posts  />)}
           />
           <Route exact path='/:category'
-                 render={(props) => (<PostIndex  {...props} posts={posts}  getAll={this.getPostandComments} comments={comments}/>)}
+                 render={(props) => (<PostIndex   />)}
           />
         </div>
       </div>
