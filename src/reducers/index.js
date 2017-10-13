@@ -13,7 +13,7 @@ import {
   VOTE_POST,
   EDIT_COMMENT,
   DELETE_COMMENT,
-  VOTE_COMMENT
+  // VOTE_COMMENT
 } from '../actions'
 
 
