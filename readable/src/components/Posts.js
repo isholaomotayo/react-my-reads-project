@@ -6,8 +6,6 @@ import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import AddPost from './AddPost'
 
-
-
 class Posts extends React.Component {
 
   state = {
@@ -34,7 +32,7 @@ class Posts extends React.Component {
     )
   removePost = (event) => deletePost(
     event.target.dataset.postid,
-    console.log('comment ' + event.target.dataset.postid + 'Deleted')
+    console.log('post ' + event.target.dataset.postid + 'Deleted')
   )
 
 
@@ -45,18 +43,18 @@ class Posts extends React.Component {
   }
 
   upVote = () => vote({
-    "id": this.props.posts.id,
+    "id": this.props.posts[0].id,
     "option": {"option": "upVote"}
   })
   downVote = () => vote({
-    "id": this.props.posts.id,
+    "id": this.props.posts[0].id,
     "option": {"option": "downVote"}
   })
 
   render() {
     const {comments, posts, categories} = this.props
-    const post = posts.reduce((post, c) => (c), {})
 
+    const post = posts[0]
     const {postId, postTitle, postBody} = this.state
 
     return (
