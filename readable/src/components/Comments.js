@@ -1,6 +1,10 @@
 import React, {Component} from 'react'
 import AddComment from './AddComment'
-import {voteComment, deleteComment,} from "../utils/index"
+import {voteAComment, deleteAComment,} from "../utils/index"
+import {deleteComment, editComment} from "../actions/index"
+import {connect} from 'react-redux'
+import {withRouter} from 'react-router-dom'
+import sortBy from 'sort-by'
 
 class Comments extends Component {
 
@@ -18,14 +22,14 @@ class Comments extends Component {
     this.setState({openComment: false})
   }
   upVote = (event) =>
-    voteComment({
+    voteAComment({
       "id": event.target.dataset.commentid,
       "option": {"option": "upVote"}
-    })
-  downVote = (event) => voteComment({
+    }).then(data => this.props.dispatch(editComment(data)))
+  downVote = (event) => voteAComment({
     "id": event.target.dataset.commentid,
     "option": {"option": "downVote"}
-  })
+  }).then(data => this.props.dispatch(editComment(data)))
 
 
   changeComment = (event) =>
@@ -35,16 +39,16 @@ class Comments extends Component {
         this.setState({editCommentBody: event.target.dataset.commentbody}),
         this.onOpenComment()
     )
-  removeComment = (event) => deleteComment(
-    event.target.dataset.commentid,
-    console.log('comment ' + event.target.dataset.commentid + 'Deleted')
-  )
+  removeComment = (event) => deleteAComment(
+    event.target.dataset.commentid).then(data => this.props.dispatch(deleteComment(data)))
+
 
     render() {
 
 
-    const {comments, post} = this.props
+      let {comments, post} = this.props
     const {downVote, upVote, changeComment, removeComment} = this
+      comments = comments.sort(sortBy('timestamp'))
     return (
 
       <div className="comments">
@@ -88,4 +92,4 @@ class Comments extends Component {
 }
 
 
-export {Comments}
+export default withRouter(connect()(Comments))

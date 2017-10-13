@@ -3,6 +3,9 @@ import React, {Component} from 'react'
 import swal from 'sweetalert'
 import uuidv4 from 'uuid'
 import * as server from '../utils';
+import {connect} from 'react-redux'
+import {withRouter} from 'react-router-dom'
+import {addPost, editPost} from '../actions'
 
 
 
@@ -19,8 +22,9 @@ class AddPost extends Component{
       voteScore: 0,
       deleted: false
     }
-    server.addPost(post).then(
-      data => swal("Post created",`Your Post ${data.title} has been added successfully`, "success"), this.props.close())
+    server.addAPost(post).then(data => this.props.dispatch(addPost(data),
+      swal("Post created", `Your Post ${data.title} has been added successfully`, "success"),
+      this.props.close()))
   }
 
   onEditPost = () => {
@@ -29,12 +33,13 @@ class AddPost extends Component{
       title: this.postName.value.trim(),
       body: this.postBody.value.trim(),
     }
-    server.editPost(post).then(
-      data => swal("Post edited",`Your Post ${data.title} has been edited successfully`, "success"), this.props.close())
+    server.editAPost(post).then(data => this.props.dispatch(editPost(data),
+      swal("Post edited", `Your Post ${data.title} has been edited successfully`, "success"), this.props.close()))
   }
 
   render(){
     const {categories, close, open , postId, postTitle, postBody } = this.props
+
     return(
 
       <Modal open={open} onClose={close}>
@@ -101,4 +106,5 @@ class AddPost extends Component{
   }
 
 }
-export default AddPost
+
+export default withRouter(connect()(AddPost))

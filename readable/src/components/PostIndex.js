@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import sortBy from 'sort-by'
-import {getCategories, getPosts, getAllComments, getComments} from '../actions'
+import {getCategories, getPosts, getAllComments, getComments, deletePost, editPost} from '../actions'
 import * as server from '../utils';
 import {connect} from 'react-redux'
 import {Link, withRouter} from 'react-router-dom'
@@ -21,10 +21,17 @@ class PostIndex extends Component {
     this.setState({open: true})
   }
   onCloseModal = () => {
-    this.setState({open: false, postId:'', postTitle: '',  postBody: ''})
-
+    this.setState({open: false, postId: '', postTitle: '', postBody: ''})
   }
 
+  upVote = (event) => server.vote({
+    "id": event.target.dataset.postid,
+    "option": {"option": "upVote"}
+  }).then(data => this.props.changeEditPost(data))
+  downVote = (event) => server.vote({
+    "id": event.target.dataset.postid,
+    "option": {"option": "downVote"}
+  }).then(data => this.props.changeEditPost(data))
 
   changePost = (event) =>
     (
@@ -34,10 +41,9 @@ class PostIndex extends Component {
         this.setState({postBody: event.target.dataset.postbody}),
         this.onOpenModal()
     )
-  removePost = (event) => server.deletePost(
-    event.target.dataset.postid,
-    console.log('comment ' + event.target.dataset.postid + 'Deleted')
-  )
+  removePost = (event) => server.deleteAPost(
+    event.target.dataset.postid)
+    .then(data => this.props.removeAPost(data))
 
 
   sort = (event) => (this.setState({criteria: event.target.value}))
@@ -57,7 +63,9 @@ class PostIndex extends Component {
 
     const {comments, categories} = this.props
 
-    const categoryPosts = this.props.posts
+
+    const categoryPosts = (this.props.match.params.category) ? this.props.posts.filter((posts) => (posts.category === this.props.match.params.category)) : this.props.posts
+
     this.state.direction === 'desc' ?
       categoryPosts.sort(sortBy(this.state.criteria)).reverse() :
       categoryPosts.sort(sortBy(this.state.criteria))
@@ -70,7 +78,7 @@ class PostIndex extends Component {
 
         <div className="inline">
           <div className="menuright">
-            <a onClick={this.onOpenModal}>
+            <a onClick={this.onOpenModal} className="bigText">
               <i className="fa fa-plus"/> <span>Add Post</span>
             </a>
           </div>
@@ -104,7 +112,7 @@ class PostIndex extends Component {
               Descending
             </label>
           </div>
-<div className="masonry">
+          <div className="masonry">
             {
               (categoryPosts ).map((post, i) => <div key={i}>
                   <Link to={`/${post.category}/${post.id}/`}>
@@ -113,9 +121,14 @@ class PostIndex extends Component {
                     <p> Votes Score: {post.voteScore}</p>
                     <p>{comments.filter(comments => (comments.parentId === post.id )).length} comments </p>
                   </Link>
-                  <span className="bigText">
+                <span className="bigText inline">
+                    <i className="fa fa-plus-square-o" onClick={this.upVote} data-postId={post.id}/>
+                    <span>  {post.voteScore} </span>
+                    <i className="fa fa-minus-square-o" onClick={this.downVote} data-postId={post.id}/>
+                  </span>
+                <span className=" iconRight">
                     <i className="fa fa-edit inline bigText" data-postId={post.id} data-postTitle={post.title}
-                       data-postBody={post.body} onClick={this.changePost}/>
+                       data-postBody={post.body} onClick={this.changePost}/> <br/>
                     <i className="fa fa-trash inline bigText" data-postId={post.id} onClick={this.removePost}/>
                   </span>
                 </div>
@@ -140,7 +153,9 @@ function mapDispatchToProps(dispatch) {
     allPosts: (data) => dispatch(getPosts(data)),
     allCategories: (data) => dispatch(getCategories(data)),
     allComments: (data) => dispatch(getAllComments(data)),
-    clearComments: (data) => dispatch(getComments(data))
+    clearComments: (data) => dispatch(getComments(data)),
+    removeAPost: (data) => dispatch(deletePost(data)),
+    changeEditPost: (data) => dispatch(editPost(data))
   }
 }
 

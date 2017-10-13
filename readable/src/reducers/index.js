@@ -5,8 +5,15 @@ import {
   GET_CATEGORIES,
   GET_COMMENTS,
   GET_ALL_COMMENTS,
-  GET_POST
-  //ADD_POSTS
+  GET_POST,
+  ADD_POST,
+  ADD_COMMENT,
+  EDIT_POST,
+  DELETE_POST,
+  VOTE_POST,
+  EDIT_COMMENT,
+  DELETE_COMMENT,
+  VOTE_COMMENT
 } from '../actions'
 
 
@@ -36,6 +43,14 @@ const posts = (state =  [{
       return action.posts.posts
     case GET_POST:
       return [action.post]
+    case ADD_POST:
+      return [...state, action.post]
+    case EDIT_POST:
+      return [...state.filter(post => post.id !== action.post.id), action.post]
+    case DELETE_POST:
+      return [...state.filter(post => post.id !== action.post.id)]
+    case VOTE_POST:
+      return [...state, action.post]
     default :
       return state
   }
@@ -48,6 +63,12 @@ const comments = (state =  [], action) => {
       return action.comments
     case GET_ALL_COMMENTS:
       return [...action.comments,...state]
+    case ADD_COMMENT:
+      return [...state, action.comments]
+    case EDIT_COMMENT:
+      return [...state.filter(comments => comments.id !== action.comments.id), action.comments]
+    case DELETE_COMMENT:
+      return [...state.filter(comments => comments.id !== action.comments.id)]
     default :
       return state
   }

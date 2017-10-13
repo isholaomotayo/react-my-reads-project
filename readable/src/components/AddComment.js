@@ -2,7 +2,10 @@ import Modal from 'react-responsive-modal';
 import React, {Component} from 'react'
 import swal from 'sweetalert'
 import uuidv4 from 'uuid'
-import { addComment, editComment } from '../utils';
+import {addAComment, editAComment} from '../utils';
+import {connect} from 'react-redux'
+import {withRouter} from 'react-router-dom'
+import {addComment, editComment} from '../actions'
 
 class AddComment extends Component {
 
@@ -17,9 +20,11 @@ class AddComment extends Component {
       voteScore: 0,
       deleted: false
     }
-    addComment(comment).then(
-      data => swal("New Comment Added", `Your Comment ${data.body} has been added successfully`, "success"), this.props.close())
+    addAComment(comment).then(data => this.props.dispatch(addComment(data),
+      swal("New Comment Added", `Your Comment ${data.body} has been added successfully`, "success"),
+      this.props.close()))
   }
+
   onEditComment = () => {
     let comment = {
       id:this.props.commentEditId,
@@ -27,8 +32,8 @@ class AddComment extends Component {
       body: this.commentBody.value.trim(),
 
     }
-    editComment(comment).then(
-      data => swal("New Comment Added", `Your Comment ${data.body} has been edited successfully`, "success"), this.props.close())
+    editAComment(comment).then(data => this.props.dispatch(editComment(data),
+      swal("New Comment Added", `Your Comment ${data.body} has been edited successfully`, "success"), this.props.close()))
   }
 
   render() {
@@ -47,7 +52,7 @@ class AddComment extends Component {
               <input type="hidden" ref={(input) => {
                 this.commentParent = input
               }} defaultValue={ post && post.id} />
-            </div>{console.log(post.id)}
+            </div>
             {!commentEditId && <div className="form-group">
               <input type="text" ref={(input) => {
                 this.commentAuthor = input
@@ -57,8 +62,8 @@ class AddComment extends Component {
 
             <div className="form-group">
                 <textarea ref={(input) => { this.commentBody = input }}
-                          required="required" defaultValue={commentEditBody && commentEditBody}></textarea>
-              <label className="control-label" htmlFor="textarea">Comment Body</label><i className="bar"></i>
+                          required="required" defaultValue={commentEditBody && commentEditBody}/>
+              <label className="control-label" htmlFor="textarea">Comment Body</label><i className="bar"/>
             </div>
             <div className="button-container">
               <button className="button" type="button" onClick={ commentEditId? this.onEditComment : this.onAddComment}>
@@ -74,4 +79,4 @@ class AddComment extends Component {
 
 }
 
-export default AddComment
+export default withRouter(connect()(AddComment))

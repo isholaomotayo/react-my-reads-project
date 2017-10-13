@@ -1,25 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './components/App';
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
+import {createStore, applyMiddleware, compose} from 'redux'
+import {Provider} from 'react-redux'
 import reducer from './reducers'
 import '../node_modules/font-awesome/css/font-awesome.min.css';
-import { BrowserRouter } from 'react-router-dom'
+import {BrowserRouter} from 'react-router-dom'
+import thunk from 'redux-thunk'
 
 /* eslint-disable no-underscore-dangle */
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+
+
 const store = createStore(
-    reducer, /* preloadedState, */
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  reducer,
+  composeEnhancers(
+    applyMiddleware(thunk)
+  )
 );
 /* eslint-enable */
 ReactDOM.render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
+  <Provider store={store}>
+    <BrowserRouter>
+      <App/>
     </BrowserRouter>
-    </Provider>
+  </Provider>
   ,
-    document.getElementById('root'));
+  document.getElementById('root'));
 

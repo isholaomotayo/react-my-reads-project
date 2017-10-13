@@ -23,13 +23,13 @@ export const getAllComments = (id) =>
     .then(res => res.json())
     .then(data => data)
 
-export const addPost = (post) =>
+export const addAPost = (post) =>
   fetch('http://localhost:3001/posts/', {headers, method:'POST',body:JSON.stringify(post)})
     .then(res => res.json())
     .then(data => data)
 
-export const addComment = (comment) =>
-  fetch(`http://localhost:3001/comments/`, {headers, method:'POST',body:JSON.stringify(comment)})
+export const addAComment = (comment) =>
+  fetch('http://localhost:3001/comments/', {headers, method: 'POST', body: JSON.stringify(comment)})
     .then(res => res.json())
     .then(data => data)
 
@@ -39,28 +39,28 @@ export const vote = (vote) =>
     .then(data => data)
 
 
-export const voteComment = (vote) =>
+export const voteAComment = (vote) =>
   fetch(`http://localhost:3001/comments/${vote.id}`, {headers, method:'POST',body:JSON.stringify(vote.option)})
     .then(res => res.json())
     .then(data => data)
 
-export const deletePost = (postId) =>
+export const deleteAPost = (postId) =>
   fetch(`http://localhost:3001/posts/${postId}`, {headers, method:'DELETE'})
     .then(res => res.json())
     .then(data => data)
 
-export const deleteComment = ( commentId) =>
+export const deleteAComment = (commentId) =>
   fetch(`http://localhost:3001/comments/${commentId}`, {headers, method:'DELETE'})
     .then(res => res.json())
     .then(data => data)
 
 
-export const editPost = (post) =>
+export const editAPost = (post) =>
   fetch(`http://localhost:3001/posts/${post.id}`, {headers, method:'PUT',body:JSON.stringify(post)})
     .then(res => res.json())
     .then(data => data)
 
-export const editComment = ( comment) =>
+export const editAComment = (comment) =>
   fetch(`http://localhost:3001/comments/${comment.id}`, {headers, method:'PUT',body:JSON.stringify(comment)})
     .then(res => res.json())
     .then(data => data)

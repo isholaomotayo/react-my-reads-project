@@ -1,7 +1,7 @@
 import React from 'react'
-import {Comments} from "./Comments"
-import {getComments, getPost} from '../actions'
-import {vote, getAllComments, deletePost, getSinglePost, } from '../utils/index'
+import Comments from "./Comments"
+import {getComments, getPost, deletePost, editPost} from '../actions'
+import {vote, getAllComments, deleteAPost, getSinglePost,} from '../utils/index'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import AddPost from './AddPost'
@@ -19,7 +19,7 @@ class Posts extends React.Component {
     this.setState({open: true})
   }
   onCloseModal = () => {
-    this.setState({open: false, postId:'', postTitle: '',     postBody: ''})
+    this.setState({open: false, postId: '', postTitle: '', postBody: ''})
   }
 
   changePost = (event) =>
@@ -30,10 +30,8 @@ class Posts extends React.Component {
         this.setState({postBody: event.target.dataset.postbody}),
         this.onOpenModal()
     )
-  removePost = (event) => deletePost(
-    event.target.dataset.postid,
-    console.log('post ' + event.target.dataset.postid + 'Deleted')
-  )
+  removePost = () => deleteAPost(this.props.posts[0].id)
+    .then(data => this.props.removeAPost(data), this.props.history.push('/'))
 
 
   componentDidMount() {
@@ -45,11 +43,11 @@ class Posts extends React.Component {
   upVote = () => vote({
     "id": this.props.posts[0].id,
     "option": {"option": "upVote"}
-  })
+  }).then(data => this.props.changeEditPost(data))
   downVote = () => vote({
     "id": this.props.posts[0].id,
     "option": {"option": "downVote"}
-  })
+  }).then(data => this.props.changeEditPost(data))
 
   render() {
     const {comments, posts, categories} = this.props
@@ -60,18 +58,18 @@ class Posts extends React.Component {
     return (
 
 
-        <div className="post">
+      <div className="post">
 
-          <AddPost close={this.onCloseModal} open={this.state.open} categories={categories}
-                   postId={postId} postTitle={postTitle} postBody={postBody}
-          />
-          <span className="vote">
-            <a onClick={this.onOpenModal} > <i   className="fa fa-plus-square" />
-            <br />
+        <AddPost close={this.onCloseModal} open={this.state.open} categories={categories}
+                 postId={postId} postTitle={postTitle} postBody={postBody}
+        />
+        <span className="vote">
+            <a onClick={this.onOpenModal}> <i className="fa fa-plus-square"/>
+            <br/>
             ADD <br/>
             POST
             </a>
-            <hr />
+            <hr/>
             VOTE <hr/>
     <i className="fa fa-plus-square-o" onClick={this.upVote}/><br/> {post.voteScore}<br/>
     <i className="fa fa-minus-square-o" onClick={this.downVote}/>
@@ -80,11 +78,11 @@ class Posts extends React.Component {
        data-postBody={post.body} onClick={this.changePost}/><br/>
     <i className="fa fa-trash inline bigText" onClick={this.removePost}/>
   </span>
-          <h1>{post && post.title}</h1>
-          <p>{post.body}
-          </p>
-          <Comments comments={comments} post={post}/>
-        </div>
+        <h1>{post && post.title}</h1>
+        <p>{post.body}
+        </p>
+        <Comments comments={comments} post={post}/>
+      </div>
 
     )
   }
@@ -99,7 +97,9 @@ const mapStateToProps = (state, props) => ({
 function mapDispatchToProps(dispatch) {
   return {
     singlePost: (data) => dispatch(getPost(data)),
-    postsComments: (data) => dispatch(getComments(data))
+    postsComments: (data) => dispatch(getComments(data)),
+    removeAPost: (data) => dispatch(deletePost(data)),
+    changeEditPost: (data) => dispatch(editPost(data))
   }
 }
 
