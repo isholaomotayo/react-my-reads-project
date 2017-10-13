@@ -33,7 +33,7 @@ class AddComment extends Component {
   }
 
   render() {
-    const {post, close, open} = this.props
+    const {post, close, open, commentEditBody, commentEditId} = this.props
 
     return (
 
@@ -41,14 +41,14 @@ class AddComment extends Component {
         <div className="form-group wide">
           <form>
             <h1>
-            {this.props.commentEditId ? 'Edit Comment' : 'Add a Comment' }
+            {commentEditId ? 'Edit Comment' : 'Add a Comment' }
            </h1>
             <div className="form-group">
               <input type="hidden" ref={(input) => {
                 this.commentParent = input
               }} value={post}/>
-            </div>{console.log(this.props.commentEditId)}
-            {!this.props.commentEditId && <div className="form-group">
+            </div>{console.log(commentEditId)}
+            {!commentEditId && <div className="form-group">
               <input type="text" ref={(input) => {
                 this.commentAuthor = input
               }} required="required" />
@@ -58,11 +58,12 @@ class AddComment extends Component {
             <div className="form-group">
                 <textarea ref={(input) => {
                   this.commentBody = input
-                }} required="required" defaultValue={this.props.commentEditBody && this.props.commentEditBody}></textarea>
+                }} required="required" defaultValue={commentEditBody && commentEditBody}></textarea>
               <label className="control-label" htmlFor="textarea">Comment Body</label><i className="bar"></i>
             </div>
             <div className="button-container">
-              <button className="button" type="button" onClick={ this.props.commentEditId? this.onEditComment : this.onAddComment}><span>Submit</span></button>
+              <button className="button" type="button" onClick={ commentEditId? this.onEditComment : this.onAddComment}>
+                <span>{commentEditId ? 'Edit Comment' : 'Create Comment'}</span></button>
             </div>
           </form>
 

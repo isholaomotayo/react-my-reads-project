@@ -123,7 +123,7 @@ h1 {
   width: 100%;
 }
 
-.mainmenu .menuright {
+.menuright {
 
   float: right;
   width: 10%;
@@ -163,7 +163,7 @@ h1 {
 .post {
   position: relative;
   background: #fff;
-  padding: 6% 6% 6% 10%;
+  padding: 6% 6% 6% 15%;
 }
 
 .post .vote {
@@ -172,11 +172,10 @@ h1 {
   color: #fff;
   font-size: 14pt;
   width: 60px;
-  height: 255px;
+  height: 305px;
   text-align: center;
   padding-top: 10px;
   position: absolute;
-  top: 30px;
   left: 0;
 }
 
@@ -185,7 +184,7 @@ h1 {
 }
 
 .post h1 {
-  font-size: 2em;
+  font-size: 1.5em;
   color: #475258;
   margin-bottom: 3%;
 
@@ -209,7 +208,7 @@ h1 {
 }
 
 .comments {
-  padding: 5% 10% 5% 15%;
+  padding: 5% 10% 5% 10%;
 
 }
 
@@ -234,6 +233,14 @@ h1 {
   color: #57CBC8;
 }
 
+.comment-content{
+  display: inline-block;
+  position: relative;
+  padding-left: 1em;
+  vertical-align: top;
+  margin-top: 1em;
+
+}
 strong {
   font-weight: 900;
 }
@@ -525,14 +532,7 @@ h2 {
 
 }
 
-.comment-content{
-  display: inline-block;
-  position: relative;
-  padding-left: 2em;
-  vertical-align: top;
-  margin-top: 1em;
-  min-width:80%;
-}
+
 
 @keyframes click-wave {
   0% {

@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getCategories, getPosts, getAllComments, getComments} from '../actions'
 import PostIndex from './PostIndex'
-import AddPost from './AddPost'
 import Posts from './Posts'
 import {Link, Route, withRouter} from 'react-router-dom'
 import './App.css';
@@ -10,17 +9,6 @@ import * as server from '../utils';
 
 
 class App extends Component {
-  state = {
-    open: false,
-
-  }
-
-  onOpenModal = () => {
-    this.setState({open: true})
-  }
-  onCloseModal = () => {
-    this.setState({open: false})
-  }
 
   componentDidMount() {
     server.getAllCategories().then(categories =>
@@ -29,12 +17,11 @@ class App extends Component {
 
   render() {
     const { categories} = this.props
-
     return (
 
       <div>
         <nav className="menu">
-          <AddPost close={this.onCloseModal} open={this.state.open} categories={categories}/>
+
           <ul className="mainmenu ">
             <Link to='/'>
               <div className="logo"><img src="/assets/readableLogo.jpg" alt="logo"/></div>
@@ -45,27 +32,20 @@ class App extends Component {
                   <Link to={`/${menu.name}/`}>{menu.name}
                   </Link></li>
               )
-
             }
 
-            <ul className="menuright">
-              <li><a onClick={this.onOpenModal}>
-                <i className="fa fa-plus"/> <span>Add Post</span>
-              </a>
-              </li>
-            </ul>
-          </ul>
 
+          </ul>
         </nav>
         <div className="container">
           <Route exact path='/'
-                 render={() => (<PostIndex  />)}
+                 render={(props) => (<PostIndex {...props}  />)}
           />
           <Route exact path='/:category/:id'
-                 render={(props) => (<Posts  />)}
+                 render={(props) => (<Posts   />)}
           />
           <Route exact path='/:category'
-                 render={(props) => (<PostIndex   />)}
+                 render={(props) => (<PostIndex  {...props} />)}
           />
         </div>
       </div>
@@ -77,7 +57,6 @@ const mapStateToProps = (state, props) => ({
   categories: state.categories,
   posts: state.posts,
   comments: state.comments,
-
 });
 
 function mapDispatchToProps(dispatch) {

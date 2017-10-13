@@ -23,16 +23,28 @@ class AddPost extends Component{
       data => swal("Post created",`Your Post ${data.title} has been added successfully`, "success"), this.props.close())
   }
 
-  render(){
-    const {categories, close, open} = this.props
+  onEditPost = () => {
+    let post = {
+      id: this.props.postId,
+      title: this.postName.value.trim(),
+      body: this.postBody.value.trim(),
+    }
+    server.editPost(post).then(
+      data => swal("Post edited",`Your Post ${data.title} has been edited successfully`, "success"), this.props.close())
+  }
 
+  render(){
+    const {categories, close, open , postId, postTitle, postBody } = this.props
     return(
 
       <Modal open={open} onClose={close}>
         <div className="form-group wide">
 
           <form>
-            <h1>Add new Post</h1>
+            <h1>
+            { postId ? 'Edit Post' : 'Add new Post'}
+            </h1>
+            { !postId &&
             <div className="form-group">
               <select ref={(input) => {
                 this.postCategory = input
@@ -41,35 +53,47 @@ class AddPost extends Component{
                   categories.map((menu, i) =>
                     <option key={i}>{menu.name}</option>)
                 }
-
               </select>
               <label className="control-label" htmlFor="select">Category</label><i className="bar"></i>
             </div>
+            }
             <div className="form-group">
-              <input type="text" ref={(input) => {
-                this.postName = input
-              }} required="required"/>
+              <input type="text"
+                     ref={(input) => { this.postName = input }}
+                     required="required"
+                      defaultValue={postTitle}/>
               <label className="control-label" htmlFor="input">Post Name</label><i className="bar"></i>
             </div>
+            {!postId &&
             <div className="form-group">
               <input type="text" ref={(input) => {
                 this.postAuthor = input
               }} required="required"/>
               <label className="control-label" htmlFor="input">Author</label><i className="bar"></i>
             </div>
+            }
             <div className="form-group">
-                <textarea ref={(input) => {
-                  this.postBody = input
-                }} required="required"></textarea>
+                <textarea
+                  ref={(input) => { this.postBody = input}}
+                  required="required"
+                  defaultValue={postBody}>
+
+                </textarea>
               <label className="control-label" htmlFor="textarea">Post Body</label><i className="bar"></i>
             </div>
 
             <div className="button-container">
 
-              <button className="button" type="button" onClick={this.onAddPost}><span>Submit</span></button>
+              <button className="button" type="button"
+
+
+                      onClick={ postId ? this.onEditPost : this.onAddPost}>
+                      <span>{postId? 'Edit post ': 'Create Post' } </span>
+
+
+              </button>
             </div>
           </form>
-
         </div>
       </Modal>
 

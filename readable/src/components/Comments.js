@@ -30,6 +30,7 @@ class Comments extends Component {
 
   changeComment = (event) =>
     (
+      // eslint-disable-next-line
         this.setState({editCommentId: event.target.dataset.commentid}),
         this.setState({editCommentBody: event.target.dataset.commentbody}),
         this.onOpenComment()
