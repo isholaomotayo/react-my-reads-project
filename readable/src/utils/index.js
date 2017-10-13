@@ -29,7 +29,7 @@ export const addPost = (post) =>
     .then(data => data)
 
 export const addComment = (comment) =>
-  fetch('http://localhost:3001/comments/', {headers, method:'POST',body:JSON.stringify(comment)})
+  fetch(`http://localhost:3001/comments/`, {headers, method:'POST',body:JSON.stringify(comment)})
     .then(res => res.json())
     .then(data => data)
 

@@ -4,7 +4,6 @@ import swal from 'sweetalert'
 import uuidv4 from 'uuid'
 import { addComment, editComment } from '../utils';
 
-
 class AddComment extends Component {
 
   onAddComment = () => {
@@ -38,6 +37,7 @@ class AddComment extends Component {
     return (
 
       <Modal open={open} onClose={close}>
+
         <div className="form-group wide">
           <form>
             <h1>
@@ -46,8 +46,8 @@ class AddComment extends Component {
             <div className="form-group">
               <input type="hidden" ref={(input) => {
                 this.commentParent = input
-              }} value={post}/>
-            </div>{console.log(commentEditId)}
+              }} defaultValue={ post && post.id} />
+            </div>{console.log(post.id)}
             {!commentEditId && <div className="form-group">
               <input type="text" ref={(input) => {
                 this.commentAuthor = input
@@ -56,9 +56,8 @@ class AddComment extends Component {
             </div>}
 
             <div className="form-group">
-                <textarea ref={(input) => {
-                  this.commentBody = input
-                }} required="required" defaultValue={commentEditBody && commentEditBody}></textarea>
+                <textarea ref={(input) => { this.commentBody = input }}
+                          required="required" defaultValue={commentEditBody && commentEditBody}></textarea>
               <label className="control-label" htmlFor="textarea">Comment Body</label><i className="bar"></i>
             </div>
             <div className="button-container">

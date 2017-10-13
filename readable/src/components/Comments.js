@@ -49,7 +49,7 @@ class Comments extends Component {
 
       <div className="comments">
         <AddComment close={this.onCloseComment} open={this.state.openComment} commentEditId={this.state.editCommentId}
-                    commentEditBody={this.state.editCommentBody} post={post.parentId}/>
+                    commentEditBody={this.state.editCommentBody} post={post}/>
 
         <i className="fa fa-comments-o"/>
         <span>there are {comments.length} comments available</span>
