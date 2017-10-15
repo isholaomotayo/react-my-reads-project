@@ -14,6 +14,7 @@ class Posts extends React.Component {
     postBody: '',
     open: false,
   }
+  goBack = () => this.props.history.push('/')
 
   onOpenModal = () => {
     this.setState({open: true})
@@ -53,15 +54,25 @@ class Posts extends React.Component {
     const post = posts[0]
     const {postId, postTitle, postBody} = this.state
 
+
     return (
 
+      post.error ? <div className="noPost">
+          <h5><span className="big404">404</span><br/>
+            <span> THE POST YOU ARE TRYING TO
+            VIEW IS </span><br/><span>NOT AVAILABLE</span></h5>
+          <div className="button-container">
+            <button className="button" type="button" onClick={this.goBack}>
+              <span> Go Back</span></button>
+          </div>
+        </div> :
 
-      <div className="post">
+        <div className="post">
 
-        <AddPost close={this.onCloseModal} open={this.state.open} categories={categories}
-                 postId={postId} postTitle={postTitle} postBody={postBody}
-        />
-        <span className="vote">
+          <AddPost close={this.onCloseModal} open={this.state.open} categories={categories}
+                   postId={postId} postTitle={postTitle} postBody={postBody}
+          />
+          <span className="vote">
             <a onClick={this.onOpenModal}> <i className="fa fa-plus-square"/>
             <br/>
             ADD <br/>
@@ -76,11 +87,11 @@ class Posts extends React.Component {
        data-postBody={post.body} onClick={this.changePost}/><br/>
     <i className="fa fa-trash inline bigText" onClick={this.removePost}/>
   </span>
-        <h1>{post && post.title}</h1>
-        <p>{post.body}
-        </p>
-        <Comments comments={comments} post={post}/>
-      </div>
+          <h1>{post && post.title}</h1>
+          <p>{post.body}
+          </p>
+          <Comments comments={comments} post={post}/>
+        </div>
 
     )
   }
