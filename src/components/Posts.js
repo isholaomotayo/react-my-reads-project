@@ -53,11 +53,11 @@ class Posts extends React.Component {
 
     const post = posts[0]
     const {postId, postTitle, postBody} = this.state
-
+    console.log(post)
 
     return (
 
-      post.error ? <div className="noPost">
+      (post.error || post.id === undefined) ? <div className="noPost">
           <h5><span className="big404">404</span><br/>
             <span> THE POST YOU ARE TRYING TO
             VIEW IS </span><br/><span>NOT AVAILABLE</span></h5>
