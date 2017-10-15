@@ -4,7 +4,7 @@ The Readable Project is a dynamic post management application built on React and
 
 The Readable app makes use of a Node JS backend which can be download from [https://github.com/udacity/reactnd-project-readable-starter](here)
 
-###Before you run the Readable project please ensure you d the following:
+### Before you run the Readable project please ensure you d the following:
 1. install node.js from [ https://nodejs.org ](here) . Make sure that you install node with the PATH variable so you can run node anywhere in your command prompt/terminal
 1. Download  the readable server from [https://github.com/udacity/reactnd-project-readable-starter](https://github.com/udacity/reactnd-project-readable-starter)
 1. Install the requirements from the included package.json file: npm install
